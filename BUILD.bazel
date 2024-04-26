@@ -10,7 +10,7 @@ PLATFORMS = [
 [
     platform_transition_filegroup(
         name = "for_" + platform.split(":")[1],
-        srcs = ["@libarchive//tar"],
+        srcs = ["@zstd//:zstd_cli"],
         target_platform = platform,
     )
     for platform in PLATFORMS

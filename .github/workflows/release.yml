@@ -10,15 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-go@v5
+      - run: go install github.com/bazelbuild/buildtools/buildozer@latest
       - run: |
           bazel build //:for_all_platforms
-          mv bazel-out/darwin_arm64-opt/bin/external/libarchive\~/tar/tar tar_darwin_arm64
-          mv bazel-out/darwin_amd64-opt/bin/external/libarchive\~/tar/tar tar_darwin_amd64
-          mv bazel-out/linux_arm64_musl-opt/bin/external/libarchive\~/tar/tar tar_linux_arm64
-          mv bazel-bin/external/libarchive\~/tar/tar  tar_linux_amd64
-          shasum -a 256 tar* > SHA256.txt
+          mv bazel-out/darwin_arm64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_arm64
+          mv bazel-out/darwin_amd64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_amd64
+          mv bazel-out/linux_arm64_musl-opt/bin/external/zstd\~/zstd_cli zstd_linux_arm64
+          mv bazel-bin/external/zstd\~/zstd_cli  zstd_linux_amd64
+          shasum -a 256 zstd* > SHA256.txt
       - uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./tar*
+            ./zstd*
             SHA256.txt
