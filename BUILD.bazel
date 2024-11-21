@@ -3,6 +3,7 @@ load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
 PLATFORMS = [
     "@zig_sdk//platform:darwin_amd64",
     "@zig_sdk//platform:darwin_arm64",
+    "@zig_sdk//platform:windows_x86_64",
     "@zig_sdk//libc_aware/platform:linux_arm64_musl",
     "@zig_sdk//libc_aware/platform:linux_amd64_musl",
 ]
@@ -10,7 +11,7 @@ PLATFORMS = [
 [
     platform_transition_filegroup(
         name = "for_" + platform.split(":")[1],
-        srcs = ["@zstd//:zstd_cli"],
+        srcs = ["@zstd//programs:zstd"],
         target_platform = platform,
     )
     for platform in PLATFORMS
