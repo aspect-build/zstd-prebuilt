@@ -1,36 +1,6 @@
 bazel_dep(name = "aspect_bazel_lib", version = "2.5.3")
-bazel_dep(name = "zstd", version = "1.5.6")
+bazel_dep(name = "zstd", version = "1.5.6.bcr.1")
 bazel_dep(name = "hermetic_cc_toolchain", version = "3.0.1")
-
-archive_override(
-    module_name = "zstd",
-    urls = [
-        "https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz"
-    ],
-    integrity = "sha256-jCngbPQqrMHq/EB3ri7Gxvy5amJhV+BZPV6Co0/UA8E=",
-    strip_prefix = "zstd-1.5.6",
-    patches = [
-        "patches/add_build_file.patch",
-        "patches/module_dot_bazel.patch",
-    ],
-    patch_cmds = [
-        # For gzip, .gz
-        """buildozer 'new bazel_dep zlib' MODULE.bazel:%""",
-        """buildozer 'set version 1.3.1' MODULE.bazel:zlib""",
-        """buildozer 'add deps @zlib//:zlib' :zstd_cli""",
-        """buildozer 'add defines ZSTD_GZCOMPRESS ZSTD_GZDECOMPRESS' :zstd_cli""", 
-        # For lzma, .xz
-        """buildozer 'new bazel_dep xz' MODULE.bazel:%""", 
-        """buildozer 'set version 5.4.5.bcr.2' MODULE.bazel:xz""",
-        """buildozer 'add deps @xz//:lzma' :zstd_cli""",
-        """buildozer 'add defines ZSTD_LZMACOMPRESS ZSTD_LZMADECOMPRESS' :zstd_cli""", 
-        # For lz4, .lz4
-        """buildozer 'new bazel_dep lz4' MODULE.bazel:%""", 
-        """buildozer 'set version 1.9.4' MODULE.bazel:lz4""",
-        """buildozer 'add deps @lz4//:lz4_frame' :zstd_cli""",
-        """buildozer 'add defines ZSTD_LZ4COMPRESS ZSTD_LZ4DECOMPRESS' :zstd_cli""", 
-    ],
-)
 
 toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
 use_repo(toolchains, "zig_sdk")

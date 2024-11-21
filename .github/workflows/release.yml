@@ -6,21 +6,18 @@ on:
       - "v*.*.*"
 
 jobs:
+  build_all:
+    uses: ./.github/workflows/build.yaml
   release:
     runs-on: ubuntu-latest
+    needs: build_all
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v5
-      - run: go install github.com/bazelbuild/buildtools/buildozer@latest
-      - run: |
-          bazel build //:for_all_platforms
-          mv bazel-out/darwin_arm64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_arm64
-          mv bazel-out/darwin_amd64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_amd64
-          mv bazel-out/linux_arm64_musl-opt/bin/external/zstd\~/zstd_cli zstd_linux_arm64
-          mv bazel-bin/external/zstd\~/zstd_cli  zstd_linux_amd64
-          shasum -a 256 zstd* > SHA256.txt
-      - uses: softprops/action-gh-release@v1
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - run: shasum -a 256 zstd_* > SHA256.txt
+      - uses: softprops/action-gh-release@v2
         with:
           files: |
-            ./zstd*
+            zstd_*
             SHA256.txt
