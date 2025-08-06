@@ -24,3 +24,15 @@ jobs:
           files: |
             ./zstd*
             SHA256.txt
+  build_windows:
+    name: windows
+    runs-on: windows-2022
+    outputs:
+      artifact: ${{steps.upload.outputs.artifact-url}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+      - run: go install github.com/bazelbuild/buildtools/buildozer@latest
+      - run: |
+          bazel build //:for_all_platforms
+          dir bazel-bin
