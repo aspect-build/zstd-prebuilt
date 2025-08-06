@@ -1,0 +1,41 @@
+name: build
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+  workflow_call:
+    outputs:
+      windows:
+        description: "Windows binaries"
+        value: ${{jobs.build_windows.outputs.artifact}}
+      linux:
+        description: "Linux and MacOS binaries"
+        value: ${{jobs.build.outputs.artifact}}
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+jobs:
+  build_windows:
+    name: windows
+    runs-on: windows-2022
+    outputs:
+      artifact: ${{steps.upload.outputs.artifact-url}}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          bazel build //...
+          bazel build --platforms @zig_sdk//platform:windows_arm64 //...
+          move bazel-out\x64_windows-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_x86_64.exe
+          move bazel-out\windows_arm64-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_arm64.exe
+      - name: smoke test
+        run: ./zstd_windows_x86_64.exe --help
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: windows
+          retention-days: 1
+          path: |
+            zstd*

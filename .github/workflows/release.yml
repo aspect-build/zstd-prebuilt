@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           bazel build //...
-          bazel build --platforms @zig_sdk//platform:windows_arm64 @libarchive//tar
+          bazel build --platforms @zig_sdk//platform:windows_arm64 //...
           move bazel-out\x64_windows-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_x86_64.exe
           move bazel-out\windows_arm64-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_arm64.exe
       - name: smoke test
