@@ -3,7 +3,7 @@ new file mode 100644
 index 00000000..f8b9c939
 --- /dev/null
 +++ BUILD.bazel
-@@ -0,0 +1,162 @@
+@@ -0,0 +1,165 @@
 +""" Builds zstd.
 +"""
 +
@@ -60,7 +60,10 @@ index 00000000..f8b9c939
 +        "lib/zstd_errors.h",
 +    ],
 +    includes = ["lib"],
-+    linkopts = ["-pthread"],
++    linkopts = select({
++        "@platforms//os:windows": [],
++        "//conditions:default": ["-pthread"],
++    }),
 +    linkstatic = True,
 +    local_defines = [
 +        "XXH_NAMESPACE=ZSTD_",

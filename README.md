@@ -14,3 +14,7 @@ does the same for zstd.
 1. MODULE.bazel should point to the latest zstd on Bazel Central Registry.
    Renovate bot will send a PR.
 2. Push a tag to the repo, will kick off automated build on GitHub Actions.
+
+## Windows
+set BAZEL_SH=path/to/bash
+bazel build //...

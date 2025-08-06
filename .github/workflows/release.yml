@@ -31,8 +31,17 @@ jobs:
       artifact: ${{steps.upload.outputs.artifact-url}}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-      - run: go install github.com/bazelbuild/buildtools/buildozer@latest
       - run: |
-          bazel build //:for_all_platforms
-          dir bazel-bin
+          bazel build //...
+          bazel build --platforms @zig_sdk//platform:windows_arm64 @libarchive//tar
+          move bazel-out\x64_windows-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_x86_64.exe
+          move bazel-out\windows_arm64-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_arm64.exe
+      - name: smoke test
+        run: ./zstd_windows_x86_64.exe --help
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: windows
+          retention-days: 1
+          path: |
+            zstd*
