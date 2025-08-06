@@ -18,6 +18,30 @@ permissions:
   contents: read
   attestations: write
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact: ${{steps.upload.outputs.artifact-url}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+      - run: go install github.com/bazelbuild/buildtools/buildozer@latest
+      - run: |
+          bazel build //:for_all_platforms
+          mv bazel-out/darwin_arm64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_arm64
+          mv bazel-out/darwin_amd64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_amd64
+          mv bazel-out/linux_arm64_musl-opt/bin/external/zstd\~/zstd_cli zstd_linux_arm64
+          mv bazel-bin/external/zstd\~/zstd_cli  zstd_linux_amd64
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: linux
+          retention-days: 1
+          path: |
+            zstd_darwin_arm64
+            zstd_darwin_amd64
+            zstd_linux_arm64
+            zstd_linux_amd64
   build_windows:
     name: windows
     runs-on: windows-2022
@@ -38,4 +62,5 @@ jobs:
           name: windows
           retention-days: 1
           path: |
-            zstd*
+            zstd_windows_x86_64.exe
+            zstd_windows_arm64.exe
