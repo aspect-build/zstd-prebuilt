@@ -19,5 +19,5 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            zstd*
+            ./zstd*
             SHA256.txt
