@@ -1,2 +1,0 @@
-2025-08-06 13:30:31,703 - bb.modules.init - INFO - Creating external symlink to D:\udu\b\cqcv2gy6\external at D:\workdir\github\peakschris\zstd-prebuilt\external
-2025-08-06 13:30:31,703 - bb.utils.file - DEBUG - symlink D:\workdir\github\peakschris\zstd-prebuilt\external -> D:\udu\b\cqcv2gy6\external
