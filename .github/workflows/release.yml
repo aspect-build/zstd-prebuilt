@@ -15,10 +15,9 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-      - run: shasum -a 256 tar* > SHA256.txt
+      - run: shasum -a 256 zstd* > SHA256.txt
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            tar*
+            zstd*
             SHA256.txt
-            
