@@ -65,7 +65,7 @@ index 00000000..f8b9c939
 +        "//conditions:default": ["-pthread"],
 +    }),
 +    linkstatic = True,
-+    local_defines = [
++    defines = [
 +        "XXH_NAMESPACE=ZSTD_",
 +        "ZSTD_MULTITHREAD",
 +        "ZSTD_BUILD_SHARED=OFF",
