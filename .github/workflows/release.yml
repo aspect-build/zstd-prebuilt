@@ -16,7 +16,7 @@ jobs:
         with:
           merge-multiple: true
       - run: shasum -a 256 zstd* > SHA256.txt
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           files: |
             ./zstd*
