@@ -23,7 +23,7 @@ jobs:
     outputs:
       artifact: ${{steps.upload.outputs.artifact-url}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v5
       - run: go install github.com/bazelbuild/buildtools/buildozer@latest
       - run: |
@@ -48,7 +48,7 @@ jobs:
     outputs:
       artifact: ${{steps.upload.outputs.artifact-url}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v5
       - run: go install github.com/bazelbuild/buildtools/buildozer@latest
       - run: |
