@@ -32,7 +32,7 @@ jobs:
           mv bazel-out/darwin_amd64-opt/bin/external/zstd\~/zstd_cli zstd_darwin_amd64
           mv bazel-out/linux_arm64_musl-opt/bin/external/zstd\~/zstd_cli zstd_linux_arm64
           mv bazel-bin/external/zstd\~/zstd_cli  zstd_linux_amd64
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         id: upload
         with:
           name: linux
@@ -58,7 +58,7 @@ jobs:
           move bazel-out\windows_arm64-opt\bin\external\zstd~\zstd_cli.exe zstd_windows_arm64.exe
       - name: smoke test
         run: ./zstd_windows_x86_64.exe --help
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         id: upload
         with:
           name: windows
